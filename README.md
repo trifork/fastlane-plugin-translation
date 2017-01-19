@@ -1,18 +1,18 @@
-# translation_from_spreadsheet plugin
+# translation plugin
 
-[![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-translation_from_spreadsheet)
+[![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-translation)
 
 ## Getting Started
 
-This project is a [fastlane](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-translation_from_spreadsheet`, add it to your project by running:
+This project is a [fastlane](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-translations`, add it to your project by running:
 
 ```bash
-fastlane add_plugin translation_from_spreadsheet
+fastlane add_plugin translation
 ```
 
-## About translation_from_spreadsheet
+## About translation
 
-Plugin used to connect to and download a spreadsheet from Google, containing localisation info, and convert it to a .strings + .swift file. Can also export to Android (strings.xml).
+Fetch application for translations from Google sheet.
 
 **Note to author:** Add a more detailed description about this plugin here. If your plugin contains multiple actions, make sure to mention them here.
 
@@ -41,11 +41,11 @@ For any other issues and feedback about this plugin, please submit it to this re
 
 ## Troubleshooting
 
-If you have trouble using plugins, check out the [Plugins Troubleshooting](https://github.com/fastlane/fastlane/blob/master/fastlane/docs/PluginsTroubleshooting.md) doc in the main `fastlane` repo.
+If you have trouble using plugins, check out the [Plugins Troubleshooting](https://docs.fastlane.tools/plugins/plugins-troubleshooting/) guide.
 
 ## Using `fastlane` Plugins
 
-For more information about how the `fastlane` plugin system works, check out the [Plugins documentation](https://github.com/fastlane/fastlane/blob/master/fastlane/docs/Plugins.md).
+For more information about how the `fastlane` plugin system works, check out the [Plugins documentation](https://docs.fastlane.tools/plugins/create-plugin/).
 
 ## About `fastlane`
 
