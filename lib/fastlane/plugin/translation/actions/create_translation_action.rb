@@ -1,7 +1,6 @@
 module Fastlane
   module Actions
     class CreateTranslationAction < Action
-
       require 'google_drive'
 
       def self.run(params)
@@ -11,18 +10,18 @@ module Fastlane
         UI.message "Creating document with title '#{params[:doc_name]}'"
 
         file = session.spreadsheet_by_title(params[:doc_name])
-        if(file)
+        if file
           raise "Document already exists, please change to a different doc_name".red
         else
           tmp_file = "#{FastlaneCore::FastlaneFolder.path}/translations"
           f = File.open(tmp_file, "w")
-          f.close()
-          file = session.upload_from_file("#{File.absolute_path(tmp_file)}", params[:doc_name], :convert => true, :content_type => "text/csv")
+          f.close
+          file = session.upload_from_file(File.absolute_path(tmp_file).to_s, params[:doc_name], convert: true, content_type: "text/csv")
 
           File.delete(tmp_file)
 
-          file.acl.push({:type => 'user', :value => params[:owner_email], :role => 'owner'})
-          file.acl.push({:type => 'user', :value => params[:seed_email], :role => 'writer'}) unless params[:owner_email] == params[:seed_email]
+          file.acl.push({ type: 'user', value: params[:owner_email], role: 'owner' })
+          file.acl.push({ type: 'user', value: params[:seed_email], role: 'writer' }) unless params[:owner_email] == params[:seed_email]
           UI.message "Done creating document, use doc_id:'#{file.id}' for pulling translations.".yellow
         end
       end
@@ -63,7 +62,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :seed_email,
                                        env_name: "FL_TRANSLATION_SEED_EMAIL",
                                        description: "The mail to give rights when initializing the document",
-                                       optional: false),
+                                       optional: false)
         ]
       end
 

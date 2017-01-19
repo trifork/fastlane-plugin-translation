@@ -1,7 +1,6 @@
 module Fastlane
   module Actions
     class TranslationAction < Action
-
       require 'google_drive'
       require 'csv'
 
@@ -14,11 +13,11 @@ module Fastlane
         file.export_as_file(params[:cvs_output_path], "text/csv")
 
         if params[:ios_output_paths]
-          self.convert_CVS_to_iOS_paths(params[:key], params[:cvs_output_path], params[:ios_output_paths])
+          self.convert_csv_to_ios_paths(params[:key], params[:cvs_output_path], params[:ios_output_paths])
         end
 
         if params[:android_output_paths]
-          convert_CVS_to_android_paths(params[:key], params[:cvs_output_path], params[:android_output_paths])
+          convert_csv_to_android_paths(params[:key], params[:cvs_output_path], params[:android_output_paths])
         end
 
         if params[:swift_struct_path]
@@ -26,44 +25,44 @@ module Fastlane
         end
 
         if params[:dotnet_class_path]
-           self.create_dotnet_class(params[:key], params[:cvs_output_path], params[:dotnet_class_path])
+          self.create_dotnet_class(params[:key], params[:cvs_output_path], params[:dotnet_class_path])
         end
 
         File.delete(params[:cvs_output_path])
       end
 
-      def self.convert_CVS_to_iOS_paths(key, cvs_path, output_paths)
-        output_paths.each{|file_path, index|
+      def self.convert_csv_to_ios_paths(key, cvs_path, output_paths)
+        output_paths.each do |file_path, index|
           FileUtils.mkdir_p(File.dirname(file_path))
           UI.message("Writing #{file_path}")
           file = open(file_path, 'w')
           CSV.foreach(cvs_path) do |row|
-            if row[key] && row[key].length > 0 && row[index] != nil
-              keyRow = row[key]
-              valueRow = row[index].gsub("\"", "\\\"")
-              valueRow = valueRow.gsub("\n", "\\n")
-              file.write("#{keyRow} = \"#{valueRow}\";\n")
+            if row[key] && row[key].length > 0 && !row[index].nil?
+              key_row = row[key]
+              value_row = row[index].gsub("\"", "\\\"")
+              value_row = value_row.gsub("\n", "\\n")
+              file.write("#{key_row} = \"#{value_row}\";\n")
             end
           end
-          file.close()
-        }
+          file.close
+        end
       end
 
-      def self.convert_CVS_to_android_paths(key, cvs_path, output_paths)
-        output_paths.each{|file_path, index|
+      def self.convert_csv_to_android_paths(key, cvs_path, output_paths)
+        output_paths.each do |file_path, index|
           FileUtils.mkdir_p(File.dirname(file_path))
           UI.message("Writing #{file_path}")
           file = open(file_path, 'w')
           file.write("<resources>\n")
           CSV.foreach(cvs_path) do |row|
             if row[key] && row[key].length > 0
-              keyRow = row[key]
-              file.write("\t<string name=\"#{keyRow}\">#{row[index]}</string>\n")
+              key_row = row[key]
+              file.write("\t<string name=\"#{key_row}\">#{row[index]}</string>\n")
             end
           end
           file.write('</resources>')
-          file.close()
-        }
+          file.close
+        end
       end
 
       def self.create_swift_struct(key, master_index, cvs_path, swift_path)
@@ -74,22 +73,22 @@ module Fastlane
 
         CSV.foreach(cvs_path) do |row|
           if row[key] && row[key].length > 0 && row.compact.length > 1
-            keyRow = row[key]
+            key_row = row[key]
             master = row[master_index]
             parameters = master.scan(/\%\d+/)
             if parameters.count > 0
               args_str = parameters.map { |e| e.sub('%', 'p') + ': String' }.join(', _ ')
-              file.write("\tstatic func #{keyRow}(_ #{args_str}) -> String {")
-              file.write(" return NSLocalizedString(\"#{keyRow}\", comment: \"\")")
-              parameters.each{|e| file.write(".replacingOccurrences(of: \"#{e}\", with: #{e.sub('%', 'p')})")}
+              file.write("\tstatic func #{key_row}(_ #{args_str}) -> String {")
+              file.write(" return NSLocalizedString(\"#{key_row}\", comment: \"\")")
+              parameters.each { |e| file.write(".replacingOccurrences(of: \"#{e}\", with: #{e.sub('%', 'p')})") }
               file.write(" }\n")
             else
-              file.write("\tstatic let #{keyRow} = NSLocalizedString(\"#{keyRow}\", comment: \"\");\n")
+              file.write("\tstatic let #{key_row} = NSLocalizedString(\"#{keyRow}\", comment: \"\");\n")
             end
           end
         end
         file.write("}")
-        file.close()
+        file.close
       end
 
       def self.create_dotnet_class(key, cvs_path, dotnet_path)
@@ -100,12 +99,12 @@ module Fastlane
 
         CSV.foreach(cvs_path) do |row|
           if row[key] && row[key].length > 0
-            keyRow = row[key]
-            file.write("\tpublic static string #{keyRow} { get { return NSBundle.MainBundle.LocalizedString (\"#{keyRow}\", null); } }\n")
+            key_row = row[key]
+            file.write("\tpublic static string #{key_row} { get { return NSBundle.MainBundle.LocalizedString (\"#{key_row}\", null); } }\n")
           end
         end
         file.write("}")
-        file.close()
+        file.close
       end
 
       #####################################################
