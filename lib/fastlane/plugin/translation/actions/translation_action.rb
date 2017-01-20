@@ -83,7 +83,7 @@ module Fastlane
               parameters.each { |e| file.write(".replacingOccurrences(of: \"#{e}\", with: #{e.sub('%', 'p')})") }
               file.write(" }\n")
             else
-              file.write("\tstatic let #{key_row} = NSLocalizedString(\"#{keyRow}\", comment: \"\");\n")
+              file.write("\tstatic let #{key_row} = NSLocalizedString(\"#{key_row}\", comment: \"\");\n")
             end
           end
         end
