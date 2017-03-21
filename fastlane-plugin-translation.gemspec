@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'google-api-client', '0.9.20'
   spec.add_dependency 'google_drive', '2.1.1'
-  spec.add_dependency 'nokogiri', '1.5.3'
+  spec.add_dependency 'nokogiri', '>=1.5.3'
 
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'bundler'
