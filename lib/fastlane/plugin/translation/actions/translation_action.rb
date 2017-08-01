@@ -69,7 +69,9 @@ module Fastlane
         UI.message("Writing swift struct #{swift_path}")
         FileUtils.mkdir_p(File.dirname(swift_path))
         file = open(swift_path, 'w')
-        file.write("import Foundation\nstruct Translations {\n")
+        file.write("import Foundation\n")
+        file.write("// swiftlint:disable identifier_name line_length file_length\n")
+        file.write("struct Translations {\n")
 
         CSV.foreach(cvs_path) do |row|
           if row[key] && row[key].length > 0 && row.compact.length > 1
@@ -83,11 +85,11 @@ module Fastlane
               parameters.each { |e| file.write(".replacingOccurrences(of: \"#{e}\", with: #{e.sub('%', 'p')})") }
               file.write(" }\n")
             else
-              file.write("\tstatic let #{key_row} = NSLocalizedString(\"#{key_row}\", comment: \"\");\n")
+              file.write("\tstatic let #{key_row} = NSLocalizedString(\"#{key_row}\", comment: \"\")\n")
             end
           end
         end
-        file.write("}")
+        file.write("}\n")
         file.close
       end
 
