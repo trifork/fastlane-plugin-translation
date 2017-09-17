@@ -70,7 +70,7 @@ module Fastlane
         FileUtils.mkdir_p(File.dirname(swift_path))
         file = open(swift_path, 'w')
         file.write("import Foundation\n")
-        file.write("// swiftlint:disable identifier_name line_length file_length\n")
+        file.write("// swiftlint:disable identifier_name line_length file_length superfluous_disable_command\n")
         file.write("struct Translations {\n")
 
         CSV.foreach(cvs_path) do |row|
