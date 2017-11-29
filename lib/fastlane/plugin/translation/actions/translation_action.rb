@@ -41,7 +41,7 @@ module Fastlane
               key_row = row[key]
               value_row = row[index].gsub("\"", "\\\"")
               value_row = value_row.gsub("\n", "\\n")
-              file.write("#{key_row} = \"#{value_row}\";\n")
+              file.write("\"#{key_row}\" = \"#{value_row}\";\n")
             end
           end
           file.close
